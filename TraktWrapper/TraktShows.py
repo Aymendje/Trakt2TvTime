@@ -21,7 +21,7 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
             if i % 500 == 0:
                 logging.info("Processing item {0} / {1}".format(i, watched.total_items))
             if episode.is_watched == False:
-                logging.debug("Trakt - Skippign episode since not watched yet")
+                logging.debug("Trakt - Skipping episode since not watched yet")
                 continue
             watchTime = None
             if episode.last_watched_at:
@@ -37,7 +37,7 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
 
             episodeId = [int(id) for (db, id) in episode.keys if str(db) == "tvdb"]
             if(len(episodeId) == 0):
-                logging.debug("Unable to find tvdb id for Episode {0}".format(episode))
+                logging.debug("Unable to find tvdb episode id for Episode {0}".format(episode))
                 problemsEpisodes[[int(id) for (db, id) in episode.keys if str(db) == "trakt"][0]] = episode
                 continue
             episodeId = episodeId[0]
@@ -45,7 +45,7 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
             if(len(showId) == 0):
                 showId = [TVDBSeriesParser.GetShowFromEpisodeId(episodeId)]
                 if showId[0] == None:
-                    logging.debug("Unable to find tvdb id for Episode {0}".format(episode))
+                    logging.debug("Unable to find tvdb show id for Episode {0}".format(episode))
                     problemsShows[[int(id) for (db, id) in episode.keys if str(db) == "trakt"][0]] = episode
                     continue
             showId = showId[0]
@@ -58,6 +58,7 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
     recoverShowsIds = set()
     missingShowEpidosdePair = {}
     tvdbShows = {}
+    logging.debug("Trakt - problemsEpisodes : {0}", problemsEpisodes)
     for trakt, episode in problemsEpisodes.items():
         showId = None
         for db, id in episode.show.keys:
@@ -70,9 +71,11 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
                 missingShowEpidosdePair[showId] = []
             missingShowEpidosdePair[showId].append((episode.pk, trakt))
 
+    logging.debug("Trakt - recoverShowsIds : {0}", recoverShowsIds)
     for showId in recoverShowsIds:
         tvdbShows[showId] = TVDBSeriesParser.GetAllEpisodes(showId)
 
+    logging.debug("Trakt - tvdbShows : {0}", tvdbShows)
     for showId, episodeIds in missingShowEpidosdePair.items():
         if showId in tvdbShows:
             for episodeId, traktKey in episodeIds: 

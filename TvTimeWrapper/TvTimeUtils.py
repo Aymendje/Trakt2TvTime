@@ -31,7 +31,7 @@ def post(url: str, data: Dict[str, Any], update_session=True, user: TvTimeLogin 
         return resp
     except Exception as err:
         CheckForRetry(err, throw, user)
-        return post(url=url, update_session=update_session, user=user, throw=True)
+        return post(url=url, data=data, update_session=update_session, user=user, throw=True)
 
 
 def put(url: str, data: Dict[str, Any], update_session=True, user: TvTimeLogin = None, throw : bool = False) -> requests.Response:
@@ -41,7 +41,7 @@ def put(url: str, data: Dict[str, Any], update_session=True, user: TvTimeLogin =
         return resp
     except Exception as err:
         CheckForRetry(err, throw, user)
-        return put(url=url, update_session=update_session, user=user, throw=True)
+        return put(url=url, data=data, update_session=update_session, user=user, throw=True)
 
 
 def delete(url: str, data: Dict[str, Any], update_session=True, user: TvTimeLogin = None, throw : bool = False) -> requests.Response:
