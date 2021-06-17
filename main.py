@@ -1,31 +1,30 @@
-import sys, os
-import base64, time, datetime
-import json
-import UsersManager
+import time, datetime, logging, sys
+from logging import handlers
+from Users import UsersManager
 from TvTimeWrapper import TvTimeLogin
 from TvTimeWrapper import TvTimeShows
 from TraktWrapper import TraktLogin
 from TraktWrapper import TraktShows
 
-import logging
-from logging.handlers import RotatingFileHandler
-from logging import handlers
+DETAILED_LOG = True
 
 log = logging.getLogger('')
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
 format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 ch = logging.StreamHandler(sys.stdout)
 ch.setFormatter(format)
 log.addHandler(ch)
 
-fh = handlers.RotatingFileHandler("Trakt2TvTime-{}.log".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
-fh.setFormatter(format)
-log.addHandler(fh)
+if DETAILED_LOG == True:
+    log.setLevel(logging.DEBUG)
+    fh = handlers.RotatingFileHandler("Trakt2TvTime-{}.log".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
+    fh.setFormatter(format)
+    log.addHandler(fh) 
 
 allUsers = UsersManager.ReadAllConfig()
 
-for user in allUsers[::-1]:
+for user in allUsers:
     try:
         logging.info("Processing user {0} ".format(user.plexUsername))
         TvTimeLogin.Login(user.tvtime)

@@ -1,4 +1,4 @@
-from UsersManager import TvTimeUser
+from Users.UsersManager import TvTimeUser
 from time import sleep
 from typing import Dict, List, Any
 import requests

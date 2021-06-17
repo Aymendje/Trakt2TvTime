@@ -1,4 +1,4 @@
-from UsersManager import TvTimeUser
+from Users.UsersManager import TvTimeUser
 import datetime
 import logging
 from trakt import Trakt

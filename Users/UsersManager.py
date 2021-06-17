@@ -68,12 +68,12 @@ def ReadSingleConfig(username, configFolderPath = os.path.join(sys.path[0], "use
             return newUser
     return None
 
-def WriteAllConfig(config : List[User], configPath = os.path.join(sys.path[0], "users")):
+def WriteAllConfig(config : List[User], configPath = os.path.join(sys.path[0], "Users")):
     for user in config:
         WriteConfig(user, configPath)
 
 
-def WriteConfig(user : User, configPath = os.path.join(sys.path[0], "users")):
+def WriteConfig(user : User, configPath = os.path.join(sys.path[0], "Users")):
     userConfig = user.returnCleanDict()
     plexUsername = user.plexUsername
     filepath = os.path.join(configPath, "{}.json".format(plexUsername))

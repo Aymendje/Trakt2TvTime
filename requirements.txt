@@ -1,3 +1,4 @@
 beautifulsoup4 >= 4.9.1
 requests >= 2.23.0
 trakt.py >= 4.4.0
+stdiomask >= 0.0.6 

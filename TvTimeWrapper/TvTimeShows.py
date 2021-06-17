@@ -1,4 +1,4 @@
-from UsersManager import TvTimeUser
+from Users.UsersManager import TvTimeUser
 from typing import Dict, List, Any
 import logging
 from bs4 import BeautifulSoup
