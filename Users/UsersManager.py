@@ -37,7 +37,7 @@ class User:
         cleanDict['tvtime'] = self.tvtime.returnCleanDict()
         return cleanDict
 
-def ReadAllConfig(configFolderPath = os.path.join(sys.path[0], "users")) -> List[User]:
+def ReadAllConfig(configFolderPath = os.path.join(sys.path[0], "Users")) -> List[User]:
     allusers = []
     for entry in os.scandir(configFolderPath):
         if entry.path.endswith(".json") and entry.is_file():
