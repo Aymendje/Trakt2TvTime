@@ -46,7 +46,7 @@ def ReadAllConfig(configFolderPath = os.path.join(sys.path[0], "users")) -> List
                 allusers.append(user)
     return allusers
 
-def ReadSingleConfig(username, configFolderPath = os.path.join(sys.path[0], "users")) -> User:
+def ReadSingleConfig(username, configFolderPath = os.path.join(sys.path[0], "Users")) -> User:
     filepath = os.path.join(configFolderPath, "{}.json".format(username))
     with open(filepath, 'r') as fp_config:
         user = json.load(fp_config)
