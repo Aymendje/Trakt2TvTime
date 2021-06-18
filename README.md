@@ -34,6 +34,28 @@ python3.9 CreateNewUser.py
 python3.9 main.py
 ```
 
+## Installation and example
+
+```
+# Install dependancy
+apt update
+apt upgrade -y
+apt install software-properties-common git nano curl -y
+
+# Install python3.9
+add-apt-repository ppa:deadsnakes/ppa -y
+apt install python3.9 git nano curl python3.9-distutils -y
+curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+python3.9 /tmp/get-pip.py
+
+# Execute tis repo
+git clone https://github.com/Aymendje/Trakt2TvTime
+cd Trakt2TvTime/
+python3.9 -m pip install -r requirements.txt
+python3.9 CreateNewUser.py
+python3.9 main.py 
+```
+
 # Configuration Details
 In the ``Users`` folder, there are the profiles you will load.
 Here is an example :
