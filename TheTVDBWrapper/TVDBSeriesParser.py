@@ -59,7 +59,7 @@ def GetAllEpisodes(showId : int):
             episodes[seid] = id
         return episodes
     except Exception as ex:
-        logging.debug("Failed to find showId for episode {0} due to exception : {1}".format(episodeId, ex))
+        logging.debug("Failed to find showId for episode {0} due to exception : {1}".format(showId, ex))
         return None
 
 def ParseSeasonEpisode(seasonEpisode : str):
