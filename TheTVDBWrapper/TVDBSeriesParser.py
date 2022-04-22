@@ -19,12 +19,15 @@ def get(url: str, throw : bool = False) -> requests.Response:
 
 def _GetAllSeasonsLink(showId : int):
     url = "https://www.thetvdb.com/dereferrer/series/{}".format(showId)
-    showPage = get(url).text
-    parser = BeautifulSoup(showPage, 'html.parser')
-    for element in parser.select('h4.list-group-item-heading'):
-        for link in element.select('a'):
-            if link.text.strip() == "All Seasons":
-                return link['href']
+    try:
+        showPage = get(url).text
+        parser = BeautifulSoup(showPage, 'html.parser')
+        for element in parser.select('h4.list-group-item-heading'):
+            for link in element.select('a'):
+                if link.text.strip() == "All Seasons":
+                    return link['href']
+    except Exception as err:
+        logging.error("URL : `{0}`. Exception : {1}. ".format(showId, err), exc_info=True)
     return None
     
 def GetShowFromEpisodeId(episodeId : int):
@@ -41,19 +44,23 @@ def GetShowFromEpisodeId(episodeId : int):
 
 
 def GetAllEpisodes(showId : int):
-    link = _GetAllSeasonsLink(showId)
-    url = "https://www.thetvdb.com{}".format(link)
-    showPage = get(url).text
-    parser = BeautifulSoup(showPage, 'html.parser')
-    episodes = {}
-    for element in parser.select('h4.list-group-item-heading'):
-        seasonEpisode = element.select_one('.episode-label').text.strip()
-        link = element.select('a')[0]
-        id = int(link["href"].split('/')[-1])
-        #title = link.text.strip()
-        seid = ParseSeasonEpisode(seasonEpisode)
-        episodes[seid] = id
-    return episodes
+    try:
+        link = _GetAllSeasonsLink(showId)
+        url = "https://www.thetvdb.com{}".format(link)
+        showPage = get(url).text
+        parser = BeautifulSoup(showPage, 'html.parser')
+        episodes = {}
+        for element in parser.select('h4.list-group-item-heading'):
+            seasonEpisode = element.select_one('.episode-label').text.strip()
+            link = element.select('a')[0]
+            id = int(link["href"].split('/')[-1])
+            #title = link.text.strip()
+            seid = ParseSeasonEpisode(seasonEpisode)
+            episodes[seid] = id
+        return episodes
+    except Exception as ex:
+        logging.debug("Failed to find showId for episode {0} due to exception : {1}".format(episodeId, ex))
+        return None
 
 def ParseSeasonEpisode(seasonEpisode : str):
     try:

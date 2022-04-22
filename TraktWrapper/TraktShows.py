@@ -73,7 +73,9 @@ def GetAllWatchedEpisodes(client, lastSyncTime: int = 0, tvTimeUser: TvTimeUser 
 
     logging.debug("Trakt - recoverShowsIds : {0}", recoverShowsIds)
     for showId in recoverShowsIds:
-        tvdbShows[showId] = TVDBSeriesParser.GetAllEpisodes(showId)
+        recoverEpisodes = TVDBSeriesParser.GetAllEpisodes(showId)
+        if recoverEpisodes != None:
+            tvdbShows[showId] = recoverEpisodes
 
     logging.debug("Trakt - tvdbShows : {0}", tvdbShows)
     for showId, episodeIds in missingShowEpidosdePair.items():
