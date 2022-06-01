@@ -7,6 +7,7 @@ from TraktWrapper import TraktLogin
 from TraktWrapper import TraktShows
 
 DETAILED_LOG = True
+DETAILED_LOG = False
 
 log = logging.getLogger('')
 log.setLevel(logging.INFO)
@@ -20,7 +21,7 @@ if DETAILED_LOG == True:
     log.setLevel(logging.DEBUG)
     fh = handlers.RotatingFileHandler("Trakt2TvTime-{}.log".format(datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
     fh.setFormatter(format)
-    log.addHandler(fh) 
+    log.addHandler(fh)
 
 allUsers = UsersManager.ReadAllConfig()
 

@@ -7,7 +7,7 @@ def Login(traktUser : TraktUser):
     traktUser.TraktClientWrapper.configuration.defaults.client(
         traktUser.ClientId, traktUser.ClientSecret)
     traktUser.TraktClientWrapper.configuration.defaults.oauth.from_response(
-        authenticate(traktUser.Authorisation))
+        authenticate(traktUser.Authorisation), refresh=True)
 
 def authenticate(authorization):
     if authorization:
