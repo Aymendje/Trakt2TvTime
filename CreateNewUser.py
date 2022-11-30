@@ -56,7 +56,7 @@ if existingUser == None:
     traktSecret = stdiomask.getpass('Trakt ClientSecret : ')
 else:
     traktClient = existingUser.trakt.ClientId
-    traktClient = existingUser.trakt.ClientSecret
+    traktSecret = existingUser.trakt.ClientSecret
 
 traktAuthorisation = ManualTraktLogin(traktClient, traktSecret)
 if traktAuthorisation == None:
