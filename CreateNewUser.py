@@ -22,40 +22,60 @@ def ManualTraktLogin(ClientId, ClientSecret):
     return authorization
 
 
-print("=== Welcoem to the user creation wizard ===")
-masterUsername = six.moves.input('Please choose a profile name : ')
+print("=== Welcome to the user creation wizard ===")
+print("___ Available users are :")
+allUsers = UsersManager.ReadAllConfig()
+for user in allUsers:
+    print(user.plexUsername)
+
+masterUsername = six.moves.input('Please choose a profile name or create a new one : ')
+
+existingUser = None
+
+for user in allUsers:
+    if user.plexUsername == masterUsername:
+        existingUser = user
+        break
 
 print("")
 print("")
 
-print("=== Creating TvTime profile ===")
-print("___ Note that we do not support Facebook or Google login for now, only username/email ___")
-print("___ you can add a username/password to your account in the settings, or by emailing support ___")
-tvTimeLogin = six.moves.input('TvTime username (or email) : ')
-tvTimePassword = stdiomask.getpass('TvTime password : ')
+if existingUser == None:
+    print("=== Creating TvTime profile ===")
+    print("___ Note that we do not support Facebook or Google login for now, only username/email ___")
+    print("___ you can add a username/password to your account in the settings, or by emailing support ___")
+    tvTimeLogin = six.moves.input('TvTime username (or email) : ')
+    tvTimePassword = stdiomask.getpass('TvTime password : ')
 
 
-print("")
-print("")
+    print("")
+    print("")
 
-print("=== Creating Trakt profile ===")
-traktClient = six.moves.input('Trakt ClientId : ')
-traktSecret = stdiomask.getpass('Trakt ClientSecret : ')
+    print("=== Creating Trakt profile ===")
+    traktClient = six.moves.input('Trakt ClientId : ')
+    traktSecret = stdiomask.getpass('Trakt ClientSecret : ')
+else:
+    traktClient = existingUser.trakt.ClientId
+    traktClient = existingUser.trakt.ClientSecret
+
 traktAuthorisation = ManualTraktLogin(traktClient, traktSecret)
 if traktAuthorisation == None:
     print("Failed to authenticate to trakt. Please make sure the API ClientId and ClientSecret are correct.")
     print("For more information on how to create an API key : https://trakt.tv/oauth/applications")
 
-
-newUser = UsersManager.User(
-    masterUsername,
-    UsersManager.TraktUser(
-        traktClient,
-        traktSecret,
-        traktAuthorisation),
-    UsersManager.TvTimeUser(
-        tvTimeLogin,
-        tvTimePassword),
-    0)
+if existingUser != None:
+    newUser = existingUser
+    newUser.trakt.Authorisation = traktAuthorisation
+else:
+    newUser = UsersManager.User(
+        masterUsername,
+        UsersManager.TraktUser(
+            traktClient,
+            traktSecret,
+            traktAuthorisation),
+        UsersManager.TvTimeUser(
+            tvTimeLogin,
+            tvTimePassword),
+        )
 
 UsersManager.WriteConfig(newUser)
