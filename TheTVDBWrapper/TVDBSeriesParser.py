@@ -46,7 +46,7 @@ def GetShowFromEpisodeId(episodeId : int):
 def GetAllEpisodes(showId : int):
     try:
         link = _GetAllSeasonsLink(showId)
-        url = "https://www.thetvdb.com{}".format(link)
+        url = "https://www.thetvdb.com/{}".format(link)
         showPage = get(url).text
         parser = BeautifulSoup(showPage, 'html.parser')
         episodes = {}

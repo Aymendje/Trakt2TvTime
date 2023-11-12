@@ -28,8 +28,8 @@ allUsers = UsersManager.ReadAllConfig()
 for user in allUsers:
     try:
         logging.info("Processing user {0} ".format(user.plexUsername))
-        TvTimeLogin.Login(user.tvtime)
         TraktLogin.Login(user.trakt)
+        TvTimeLogin.Login(user.tvtime)
         currentTime = int(time.time())
         logging.debug("Main - currentTime = {0}".format(currentTime))
         traktEpisodes = TraktShows.GetAllWatchedEpisodes(user.trakt.TraktClientWrapper, user.lastSync, tvTimeUser = user.tvtime)
