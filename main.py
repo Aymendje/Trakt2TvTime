@@ -1,4 +1,4 @@
-import time, datetime, logging, sys
+import time, datetime, logging, sys, os
 from logging import handlers
 from Users import UsersManager
 from TvTimeWrapper import TvTimeLogin
@@ -6,8 +6,9 @@ from TvTimeWrapper import TvTimeShows
 from TraktWrapper import TraktLogin
 from TraktWrapper import TraktShows
 
-DETAILED_LOG = True
 DETAILED_LOG = False
+if os.path.isfile(".DEBUG"):
+    DETAILED_LOG = True
 
 log = logging.getLogger('')
 log.setLevel(logging.INFO)
